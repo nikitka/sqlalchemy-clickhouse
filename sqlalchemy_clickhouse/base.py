@@ -121,17 +121,22 @@ class ClickHouseCompiler(PGCompiler):
         return value
 
     def limit_clause(self, select, **kw):
-        text = ''
-        if select._limit_clause is not None:
-            text += '\n LIMIT ' + self.process(select._limit_clause, **kw)
-        if select._offset_clause is not None:
-            text = '\n LIMIT '
-            if select._limit_clause is None:
-                text += self.process(sql.literal(-1))
-            else:
-                text += '0'
-            text += ',' + self.process(select._offset_clause, **kw)
-        return text
+        limit_clause, offset_clause = select._limit_clause, \
+            select._offset_clause
+
+        if limit_clause is None and offset_clause is None:
+            return ''
+        elif offset_clause is not None:
+            if limit_clause is None:
+                raise sa_exc.CompileError("offset requires a limit")
+
+            return '\n LIMIT %s, %s' % (
+               self.process(offset_clause, **kw),
+               self.process(limit_clause, **kw)
+            )
+        else:
+            return ' \n LIMIT %s' % (self.process(limit_clause, **kw),)
+
 
     def for_update_clause(self, select, **kw):
         return '' # Not supported
