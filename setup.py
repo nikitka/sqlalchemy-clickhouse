@@ -1,11 +1,10 @@
 #!/usr/bin/env python
-
 from os import path, getenv
 from setuptools import setup
 from codecs import open
 
 VERSION = [0, 1, 0]
-readme = open('README.rst').read()
+readme = open('README.rst', 'rt').read()
 
 setup(
     name='sqlalchemy-clickhouse',
