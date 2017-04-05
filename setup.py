@@ -8,7 +8,7 @@ readme = open('README.rst', 'rt').read()
 
 setup(
     name='sqlalchemy-clickhouse',
-    version='.'.join('%d' % v for v in VERSION[0:3]) + "-3",
+    version='.'.join('%d' % v for v in VERSION[0:3]) + ".post4",
     description='ClickHouse SQLAlchemy Dialect',
     long_description = readme,
     author = 'Cloudflare, Inc.',
@@ -24,9 +24,6 @@ setup(
     packages=[
         'sqlalchemy_clickhouse',
     ],
-    package_dir={
-        'sqlalchemy_clickhouse': '.',
-    },
     package_data={
         'sqlalchemy_clickhouse': ['LICENSE.txt'],
     },
